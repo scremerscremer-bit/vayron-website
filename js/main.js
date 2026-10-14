@@ -127,12 +127,15 @@
       lead:'Slova s ugrađenom LED rasvjetom, vidljiva danju i noću. Modeli se razlikuju po tome odakle svjetlo izlazi: kroz lice, kroz bok ili iza slova.',
       h2:'Šest načina da natpis svijetli',wall:'dark',other:['nesvjetleca','Nesvjetleća 3D slova →'],
       models:[
-        {n:'Svijetli lice',cls:'g-front',cfg:'front',d:'Lice od opal pleksija ravnomjerno svijetli, bok je neproziran. Najčitljiviji model na daljinu.',sp:[['Dubina','50–100 mm'],['Lice','Opal pleksi 3 mm'],['Za','Fasade, lokali']]},
+        {code:'S1L',n:'Svjetleće lice',cls:'g-s1l',cfg:'front',
+          d:'Osvijetljeno lice naglašava oblik i boju logotipa, dok nesvjetleći bok daje natpisu jasno definisanu dubinu. Boje i završne obrade prilagođavaju se vizuelnom identitetu brenda.',
+          sp:[['Osvjetljenje','kroz lice'],['Lice','plexiglass 3 mm'],['Dubina','50–100 mm'],['LED','3000 / 4000 / 6500 K']],
+          details:{tag:'Vaš identitet, istaknut svjetlom.',spec:[['Osvjetljenje','kroz lice slova'],['Lice','plexiglass 3 mm, u boji prema zahtjevu klijenta'],['Bočne stranice','nesvjetleći PETG ili akril'],['Boja boka','sve boje iz RAL Design palete'],['Završna obrada boka','mat ili sjaj'],['Poleđina','pjenasti PVC debljine 10 mm'],['Izvor svjetlosti','SM LED modules / nano-cut LED strip'],['Temperatura svjetlosti','3000K / 4000K / 6500K'],['Dubina','50–100 mm']]}},
         {n:'Halo (backlit)',cls:'g-halo',cfg:'halo',d:'Lice i bok su zatvoreni, a svjetlo izlazi pozadi i pravi oreol na zidu. Elegantan, premium izgled.',sp:[['Dubina','40–60 mm'],['Montaža','Distanceri 20–40 mm'],['Za','Uredi, hoteli, saloni']]},
         {n:'Lice + bok',cls:'g-full',cfg:'full',d:'Svijetle i lice i bok. Natpis je vidljiv i kad mu se prilazi sa strane.',sp:[['Dubina','50–80 mm'],['Bok','Opal, propušta svjetlo'],['Za','Prometne lokacije']]},
         {n:'Svijetli bok',cls:'g-side',cfg:'side',d:'Lice ostaje u boji ili crno, svijetli samo bok. Daje efekat linije svjetla oko slova.',sp:[['Dubina','40–70 mm'],['Rasvjeta','LED traka'],['Za','Enterijeri, brendovi']]},
-        {n:'Lice + halo',cls:'g-combo',cfg:'front',d:'Kombinacija svjetlećeg lica i oreola iza slova. Najviše svjetla i najjači utisak noću.',sp:[['Dubina','60–100 mm'],['Montaža','Distanceri 20–40 mm'],['Za','Fasade, izlozi']]},
-        {n:'Svijetli lice, metalik bok',cls:'g-frontmetal',cfg:'front',d:'Svjetleće lice uokvireno bokom u zlatnoj, srebrnoj ili bakarnoj završnoj obradi.',sp:[['Dubina','40–80 mm'],['Bok','Metalik lak'],['Za','Luksuzni brendovi']]}
+        {n:'Lice + halo',cls:'g-combo',cfg:null,d:'Kombinacija svjetlećeg lica i oreola iza slova. Najviše svjetla i najjači utisak noću.',sp:[['Dubina','60–100 mm'],['Montaža','Distanceri 20–40 mm'],['Za','Fasade, izlozi']]},
+        {n:'Svijetli lice, metalik bok',cls:'g-frontmetal',cfg:null,d:'Svjetleće lice uokvireno bokom u zlatnoj, srebrnoj ili bakarnoj završnoj obradi.',sp:[['Dubina','40–80 mm'],['Bok','Metalik lak'],['Za','Luksuzni brendovi']]}
       ]},
     nesvjetleca:{title:'Nesvjetleća 3D slova',eyebrow:'Tip 02 · bez rasvjete',img:'assets/img/nesvjetleca.jpg',alt:'Nesvjetleća crna 3D slova VAYRON na betonskoj ploči',
       lead:'Puna 3D slova bez rasvjete. Dubina, boja i završna obrada daju natpisu prisustvo i bez svjetla, idealno za enterijere i dobro osvijetljene prostore.',
@@ -153,19 +156,61 @@
     const im=$('#mp-img');im.src=p.img;im.alt=p.alt;
     document.querySelectorAll('.mp-tabs a').forEach(a=>{if(a.dataset.tab===key)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
     const o=$('#mp-other');o.href='#'+p.other[0];o.textContent=p.other[1];
-    $('#mp-models').innerHTML=p.models.map((m,i)=>`<article class="model">
+    const grid=$('#mp-models');grid.classList.toggle('mc-grid',key==='svjetleca');
+    grid.innerHTML=key==='svjetleca'?p.models.map((m,i)=>mcCard(p,m,i)).join(''):p.models.map((m,i)=>`<article class="model">
       <div class="mv ${p.wall}"><span class="mno">${String(i+1).padStart(2,'0')}</span><span class="glyph ${m.cls}">Aa</span></div>
       <div class="body"><h3>${m.n}</h3><p>${m.d}</p>
       <dl class="specs">${m.sp.map(x=>`<dt>${x[0]}</dt><dd>${x[1]}</dd>`).join('')}</dl>
       <div class="acts"><a class="btn btn-gold" href="#upit" data-quote="${p.title} · ${m.n}">Zatraži ponudu</a><a class="try" href="#konfigurator" data-cfg="${m.cfg}">Isprobaj u konfiguratoru</a></div></div></article>`).join('');
   }
+  // Kartica modela (katalog svjetlećih slova)
+  function mcCard(p,m,i){
+    const id='mc-'+(m.code||('m'+(i+1))).toLowerCase();
+    const quote=m.code?`Model ${m.code} · ${m.n}`:`${p.title} · ${m.n}`;
+    return `<article class="mc" aria-labelledby="${id}-t">
+      <div class="mc-vis"><span class="glyph ${m.cls}" aria-hidden="true">Aa</span><span class="mc-ill">Ilustracija efekta</span></div>
+      <div class="mc-body">
+        <p class="mc-code${m.code?'':' is-pending'}">${m.code||'Model '+String(i+1).padStart(2,'0')}</p>
+        <h3 class="mc-name" id="${id}-t">${m.n}</h3>
+        ${m.tag?`<p class="mc-tag">${m.tag}</p>`:''}
+        <p class="mc-desc">${m.d}</p>
+        <dl class="mc-specs">${m.sp.map(x=>`<div><dt>${x[0]}</dt><dd>${x[1]}</dd></div>`).join('')}</dl>
+        <div class="mc-acts">
+          <a class="btn btn-gold" href="#upit" data-quote="${quote}">Zatraži ponudu</a>
+          ${m.details?`<button type="button" class="btn btn-line" data-details="${i}" aria-haspopup="dialog">Detalji modela</button>`:''}
+          ${m.cfg?`<a class="mc-try" href="#konfigurator" data-cfg="${m.cfg}">Isprobaj u konfiguratoru</a>`:'<span class="mc-try is-empty" aria-hidden="true">&nbsp;</span>'}
+        </div>
+      </div>
+    </article>`;
+  }
+  // Modal s detaljima modela
+  const dlg=$('#mcDialog');let dlgOpener=null,dlgModel=null;
+  function openDetails(m,opener){
+    dlgOpener=opener;dlgModel=m;
+    $('#mcd-code').textContent=m.code;$('#mcd-title').textContent=m.n;const tg=m.details.tag||m.tag||'';$('#mcd-tag').textContent=tg;$('#mcd-tag').hidden=!tg;$('#mcd-desc').textContent=m.d;
+    $('#mcd-spec').innerHTML=m.details.spec.map(r=>`<tr><th scope="row">${r[0]}</th><td>${r[1]}</td></tr>`).join('');
+    const nt=$('#mcd-note');nt.textContent=m.details.note||'';nt.hidden=!m.details.note;
+    $('#mcd-quote').dataset.quote=`Model ${m.code} · ${m.n}`;
+    if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','');
+    document.documentElement.classList.add('mc-lock');
+    $('#mcd-close').focus();
+  }
+  function closeDetails(){if(dlg.open){dlg.close?dlg.close():dlg.removeAttribute('open')}}
+  dlg.addEventListener('close',()=>{document.documentElement.classList.remove('mc-lock');if(dlgOpener&&document.contains(dlgOpener)&&!mpEl.hidden)dlgOpener.focus();dlgOpener=null});
+  dlg.addEventListener('cancel',e=>{e.preventDefault();closeDetails()});
+  dlg.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();closeDetails()}});
+  dlg.addEventListener('click',e=>{if(e.target===dlg)closeDetails()});
+  $('#mcd-close').addEventListener('click',closeDetails);
+  $('#mcd-quote').addEventListener('click',e=>{$('#i-konf').value=e.currentTarget.dataset.quote;dlgOpener=null;closeDetails()});
   $('#mp-models').addEventListener('click',e=>{
-    const q=e.target.closest('[data-quote]'),c=e.target.closest('[data-cfg]');
-    if(q){$('#i-konf').value='Model: '+q.dataset.quote}
+    const q=e.target.closest('[data-quote]'),c=e.target.closest('[data-cfg]'),dt=e.target.closest('[data-details]');
+    if(dt){const m=MP.svjetleca.models[+dt.dataset.details];if(m&&m.details)openDetails(m,dt);return}
+    if(q){$('#i-konf').value=q.dataset.quote.startsWith('Model ')?q.dataset.quote:'Model: '+q.dataset.quote}
     if(c){st.type=c.dataset.cfg;seg('#c-type',TYPES,'type',t=>t.name,t=>t.id);render()}
   });
   let lastPage=null;
   function route(){
+    if(dlg.open){dlgOpener=null;closeDetails()}
     const h=decodeURIComponent(location.hash.slice(1));
     if(MP[h]){if(lastPage!==h){renderMP(h);lastPage=h}mainEl.hidden=true;mpEl.hidden=false;window.scrollTo(0,0);document.title=MP[h].title+' · Vayron';return}
     const wasModels=!mpEl.hidden;mpEl.hidden=true;mainEl.hidden=false;document.title='Vayron Visual Technologies';

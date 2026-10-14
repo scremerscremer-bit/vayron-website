@@ -352,6 +352,23 @@
     <div class="wrap">
       <div class="sec-head"><p class="eyebrow">Modeli</p><h2 class="h2" id="mp-h2"></h2></div>
       <div class="models" id="mp-models"></div>
+      <dialog class="mc-dialog" id="mcDialog" aria-labelledby="mcd-title" aria-describedby="mcd-desc">
+        <div class="mcd-inner">
+          <div class="mcd-head">
+            <div>
+              <p class="mc-code" id="mcd-code"></p>
+              <h2 class="mcd-title" id="mcd-title"></h2>
+              <p class="mc-tag" id="mcd-tag"></p>
+            </div>
+            <button type="button" class="mcd-close" id="mcd-close" aria-label="Zatvori detalje modela"><span aria-hidden="true">✕</span><span class="mcd-close-t">Zatvori</span></button>
+          </div>
+          <p class="mcd-desc" id="mcd-desc"></p>
+          <h3 class="mcd-sub">Specifikacije</h3>
+          <div class="mcd-table-wrap"><table class="mcd-table"><tbody id="mcd-spec"></tbody></table></div>
+          <p class="mcd-note" id="mcd-note"></p>
+          <div class="mcd-acts"><a class="btn btn-gold" href="#upit" id="mcd-quote" data-quote="">Zatraži ponudu <span class="arrow">→</span></a></div>
+        </div>
+      </dialog>
       <div class="mp-cta">
         <div><h3>Niste sigurni koji model odgovara vašem prostoru?</h3><p>Pošaljite fotografiju zida i logo, a mi predlažemo model i dimenzije.</p></div>
         <div class="cta-row"><a class="btn btn-gold" href="#upit">Pošaljite upit <span class="arrow">→</span></a><a class="btn btn-line" id="mp-other" href="#nesvjetleca"></a></div>
